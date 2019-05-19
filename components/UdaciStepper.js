@@ -4,7 +4,7 @@ import { View, Text } from 'react-native';
 export default UdaciStepper = () => {
     return(
         <View>
-            <Text> UdaciStepper</Text>
+            <Text> UdaciStepper </Text>
         </View>
     )
 }

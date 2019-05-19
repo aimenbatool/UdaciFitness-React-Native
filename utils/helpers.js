@@ -88,7 +88,7 @@ export function isBetween (num, x, y) {
         getIcon() {
           return (
             <View>
-              <MaterialCommunityIcons name="swim" color={white} size={35} />
+              <MaterialCommunityIcons name="swim" color={gray} size={35} />
             </View>
           )
         }
@@ -102,7 +102,7 @@ export function isBetween (num, x, y) {
         getIcon() {
           return (
             <View>
-              <FontAwesome name="bed" color={white} size={30} />
+              <FontAwesome name="bed" color={gray} size={30} />
             </View>
           )
         }
@@ -116,7 +116,7 @@ export function isBetween (num, x, y) {
         getIcon() {
           return (
             <View>
-              <MaterialCommunityIcons name="food" color={white} size={32} />
+              <MaterialCommunityIcons name="food" color={gray} size={32} />
             </View>
           )
         }
