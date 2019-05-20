@@ -4,6 +4,8 @@ import { getMetricMetaInfo, timeToString } from '../utils/helpers';
 import UdaciSlider from './UdaciSlider';
 import UdaciSteppers from './UdaciStepper';
 import DateHeader from './DateHeader';
+import { Ionicons } from '@expo/vector-icons';
+import TextButton from './TextButton';
 
 SubmitButton = ({ onPress }) => {
     return (
@@ -69,8 +71,29 @@ class AddEntry extends Component {
         }))
     }
 
+    reset = () => {
+        const key = timeToString();
+
+        // TODO: Update Redux, Route to home and Update DB
+    }
+
     render() {
         const metaInfo = getMetricMetaInfo();
+
+        if (this.props.alreadyLogged) {
+            return (
+                <View>
+                    <Ionicons
+                        name='md-happy'
+                        size={100}
+                     />
+                    <Text> You already logged your information today.</Text>
+                    <TextButton onPress={this.reset}>
+                        Reset
+                    </TextButton>
+                </View>
+            );
+        }
 
         return(
             <View>
@@ -78,7 +101,6 @@ class AddEntry extends Component {
                 {Object.keys(metaInfo).map((key) => {
                    const { getIcon, type, ...rest } = metaInfo[key];
                    const value = this.state[key];
-
                    return(
                        <View key={key}>
                         {getIcon()}
