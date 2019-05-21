@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import {
+    View,
+    TouchableOpacity,
+    Text,
+    StyleSheet,
+    Platform
+} from 'react-native';
 import {
     getMetricMetaInfo,
     timeToString,
@@ -13,12 +19,17 @@ import TextButton from './TextButton';
 import { submitEntry, removeEntry } from '../utils/api';
 import { connect } from 'react-redux';
 import { addEntry } from '../actions';
+import { purple, white } from '../utils/colors';
 
 
 SubmitButton = ({ onPress }) => {
     return (
-        <TouchableOpacity onPress={onPress}>
-            <Text> SUBMIT </Text>
+        <TouchableOpacity
+            style={
+                Platform.OS === 'ios' ? styles.iosSubmitButton : styles.AndroidSubmitBtn
+            }
+            onPress={onPress}>
+            <Text style={styles.submitBtnText}> SUBMIT </Text>
         </TouchableOpacity>
     );
 }
@@ -95,13 +106,13 @@ class AddEntry extends Component {
 
         if (this.props.alreadyLogged) {
             return (
-                <View>
+                <View style={styles.center}>
                     <Ionicons
-                        name='md-happy'
+                        name={Platform.OS === "ios" ? "ios-happy" : "md-happy"}
                         size={100}
                      />
                     <Text> You already logged your information today.</Text>
-                    <TextButton onPress={this.reset}>
+                    <TextButton style={{ padding: 10 }} onPress={this.reset}>
                         Reset
                     </TextButton>
                 </View>
@@ -109,13 +120,13 @@ class AddEntry extends Component {
         }
 
         return(
-            <View>
+            <View style={styles.container}>
                 <DateHeader date={(new Date()).toLocaleString()} />
                 {Object.keys(metaInfo).map((key) => {
                    const { getIcon, type, ...rest } = metaInfo[key];
                    const value = this.state[key];
                    return(
-                       <View key={key}>
+                       <View key={key} style={styles.row}>
                         {getIcon()}
                         {type === 'slider'
                             ? <UdaciSlider 
@@ -138,6 +149,50 @@ class AddEntry extends Component {
         );
     }   
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 20,
+        backgroundColor: white,
+    },
+    row: {
+        flexDirection: "row",
+        flex: 1,
+        alignItems: "center",
+    },
+    iosSubmitButton: {
+        backgroundColor: purple,
+        padding: 10,
+        borderRadius: 7,
+        height: 45,
+        marginLeft: 40,
+        marginRight: 40
+    },
+    AndroidSubmitBtn: {
+        backgroundColor: purple,
+        padding: 10,
+        paddingLeft: 30,
+        paddingRight: 30,
+        height: 45,
+        borderRadius: 2,
+        alignSelf: "flex-end",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    submitBtnText: {
+        color: white,
+        fontSize: 22,
+        textAlign: "center"
+    },
+    center: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginLeft: 30,
+        marginRight: 30
+    }
+})
 
 const mapStateToProps = (state) => {
     const key = timeToString();
