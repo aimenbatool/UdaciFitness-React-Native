@@ -5,16 +5,22 @@ import History from './components/History';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import reducer from './reducers';
-import { createBottomTabNavigator, createAppContainer, createMaterialTopTabNavigator, SafeAreaView } from 'react-navigation';
+import {
+  createBottomTabNavigator,
+  createAppContainer,
+  createMaterialTopTabNavigator,
+  createStackNavigator,
+} from 'react-navigation';
 import { purple, white } from './utils/colors';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { Constants } from 'expo';
+import EntryDetail from './components/EntryDetail';
 
 const UdaciStatusBar = ({ backgroundColor, ...props }) => {
   return (
-    <SafeAreaView style={{ backgroundColor, height: Constants.statusBarHeight }}>
+    <View style={{ backgroundColor, height: Constants.statusBarHeight }}>
       <StatusBar translucent backgroundColor={backgroundColor} {...props} />
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -58,13 +64,30 @@ const tabOptions =  {
 const navigatorPlatform = Platform.OS === 'ios' ? createBottomTabNavigator(Tabs, tabOptions) : createMaterialTopTabNavigator(Tabs, tabOptions);
 const TabsNavigator = createAppContainer(navigatorPlatform);
 
+const Stack = createStackNavigator({
+  Home: {
+    screen: TabsNavigator,
+  },
+  EntryDetail : {
+    screen: EntryDetail,
+    navigationOptions: {
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: purple,
+      }
+    }
+  }
+})
+
+const StackNavigator = createAppContainer(Stack);
+
 export default class App extends React.Component {
   render() {
     return (
       <Provider store={createStore(reducer)}>
         <View style={{flex: 1}}>
           <UdaciStatusBar backgroundColor={purple} barStyle="light-content" />
-          <TabsNavigator />
+          <StackNavigator />
         </View>
       </Provider>
     );
