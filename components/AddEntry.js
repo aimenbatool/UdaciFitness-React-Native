@@ -9,7 +9,9 @@ import {
 import {
     getMetricMetaInfo,
     timeToString,
-    getDailyReminderValue
+    getDailyReminderValue,
+    clearLocalNotification,
+    setLocalNotification,
 } from '../utils/helpers';
 import UdaciSlider from './UdaciSlider';
 import UdaciSteppers from './UdaciStepper';
@@ -62,6 +64,9 @@ class AddEntry extends Component {
         
         this.toHome();
         submitEntry({ key, entry });
+
+        clearLocalNotification()
+            .then(setLocalNotification)
     }
 
     increment = (metric) => {
